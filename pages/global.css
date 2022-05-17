@@ -25,7 +25,16 @@ body {
   border-radius: 9999px;
   align-items: center;
   color: white;
+  transition: all ease 100ms
 }
+
+button:not(:disabled):hover {
+  transform: scale(1.04)
+}
+
+ button:disabled {
+   background: #FF7AB8;
+ }
 
 .card {
   /* display: flex; */

@@ -4,6 +4,8 @@ import { useContractWrite } from 'wagmi';
 import contractInterface from '../contract-abi.json';
 
 export function Mint() {
+  const [minted, setMinted] = React.useState(false);
+
   // 📄 Contract Config
   const contractConfig = {
     addressOrName: '0xf175a8bb93c63dfd6416964882dfef9f27db4a9a',
@@ -11,6 +13,11 @@ export function Mint() {
   };
 
   const { write } = useContractWrite(contractConfig, 'mint');
+
+  const mint = () => {
+    write();
+    setMinted(true);
+  };
 
   return (
     <div className="card">
@@ -24,8 +31,8 @@ export function Mint() {
       </div>
       <div className="content">
         <h1>RainbowKit NFT</h1>
-        <button className="button" onClick={() => write()}>
-          Mint
+        <button disabled={minted} className="button" onClick={() => mint()}>
+          {minted ? 'Minted' : 'Mint'}
         </button>
       </div>
     </div>
