@@ -3,7 +3,7 @@ import React from 'react';
 import { useContractWrite } from 'wagmi';
 import contractInterface from '../contract-abi.json';
 
-export function Mint() {
+export function Mint({ ready }: any) {
   const [minted, setMinted] = React.useState(false);
 
   // 📄 Contract Config
@@ -31,9 +31,13 @@ export function Mint() {
       </div>
       <div className="content">
         <h1>RainbowKit NFT</h1>
-        <button disabled={minted} className="button" onClick={() => mint()}>
-          {minted ? 'Minted' : 'Mint'}
-        </button>
+        {ready ? (
+          <button disabled={minted} className="button" onClick={() => mint()}>
+            {minted ? 'Minted' : 'Mint'}
+          </button>
+        ) : (
+          <p>Connect your wallet to mint.</p>
+        )}
       </div>
     </div>
   );

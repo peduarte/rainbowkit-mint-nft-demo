@@ -24,7 +24,7 @@ const Home: NextPage = () => {
         <ConnectButton />
       </div>
 
-      {accountReady && <Mint />}
+      <Mint ready={accountReady} />
     </div>
   );
 };
