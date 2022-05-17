@@ -32,7 +32,10 @@ button:not(:disabled):hover {
   transform: scale(1.04)
 }
 
- button:disabled {
+ button[data-minting="true"] {
+   background: rgba(22, 25, 31, 0.24);
+ }
+ button[data-minted="true"] {
    background: #FF7AB8;
  }
 
