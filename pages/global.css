@@ -1,0 +1,50 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: SFRounded, ui-rounded, "SF Pro Rounded";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.button {
+  appearance: none;
+  border: none;
+  font-family: SFRounded, ui-rounded, "SF Pro Rounded";
+  background-image: linear-gradient(to right, #3898FF, #7A70FF);
+  display: inline-flex;
+  line-height: 1;
+  font-size: 16px;
+  font-weight: 700;
+  height: 35px;
+  padding: 0 24px;
+  border-radius: 9999px;
+  align-items: center;
+  color: white;
+}
+
+.card {
+  /* display: flex; */
+  border-radius: 12px;
+  box-shadow: 0 0 50px rgba(0,0,0,.1);
+  overflow: hidden;
+  width: 250px;
+  margin: 60px auto
+}
+
+.image {
+
+}
+
+.content {
+  padding: 12px
+}
+
+h1 {
+  font-size: 16px;
+  margin-bottom: 24px;
+}

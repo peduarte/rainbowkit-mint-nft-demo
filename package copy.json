@@ -1,0 +1,15 @@
+{
+  "name": "rainbowkit-examples",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "dev": "pnpm dev --recursive",
+    "dev:with-create-react-app": "pnpm dev --recursive --filter with-create-react-app",
+    "dev:with-next": "pnpm dev --recursive --filter with-next",
+    "dev:with-next-custom-button": "pnpm dev --recursive --filter with-next-custom-button",
+    "dev:with-next-mint-nft": "pnpm dev --recursive --filter with-next-mint-nft",
+    "ci:with-next-mint-nft": "pnpm build --filter=with-next-mint-nft",
+    "start": "pnpm dev",
+    "lint": "pnpm lint --recursive"
+  }
+}
