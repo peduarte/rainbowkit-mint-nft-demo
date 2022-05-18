@@ -7,7 +7,7 @@ import contractInterface from '../contract-abi.json';
 import FlipCard, { BackCard, FrontCard } from '../components/FlipCard';
 
 const contractConfig = {
-  addressOrName: '0xf175a8bb93c63dfd6416964882dfef9f27db4a9a',
+  addressOrName: '0x842E1Be3e51285ff86C51959666e2cc4E5eD46c0',
   contractInterface: contractInterface,
 };
 
