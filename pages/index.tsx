@@ -51,8 +51,8 @@ const Home: NextPage = () => {
         }}
       >
         <div style={{ flex: '1 1 auto' }}>
-          <div style={{ paddingRight: 30 }}>
-            <h1 style={{ marginTop: 24 }}>Minting is now live</h1>
+          <div style={{ padding: '24px 24px 24px 0' }}>
+            <h1>Minting is now live</h1>
             <ConnectButton />
             {accountReady && (
               <button
