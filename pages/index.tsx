@@ -2,34 +2,55 @@ import React from 'react';
 import Image from 'next/image';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import type { NextPage } from 'next';
-import { useAccount, useContractWrite } from 'wagmi';
+import {
+  useAccount,
+  useContractRead,
+  useContractWrite,
+  useWaitForTransaction,
+} from 'wagmi';
 import contractInterface from '../contract-abi.json';
 import FlipCard, { BackCard, FrontCard } from '../components/FlipCard';
+import { ethers } from 'ethers';
 
 const contractConfig = {
-  addressOrName: '0x842E1Be3e51285ff86C51959666e2cc4E5eD46c0',
+  addressOrName: '0x86fbbb1254c39602a7b067d5ae7e5c2bdfd61a30',
   contractInterface: contractInterface,
 };
 
 const Home: NextPage = () => {
   const [accountReady, setAccountReady] = React.useState(false);
-  const [isCardFlipped, setIsCardFlipped] = React.useState(true);
+  const [isMinted, setIsMinted] = React.useState(false);
+  const [totalMinted, setTotalMinted] = React.useState(0);
   const { data: account } = useAccount();
 
   const {
     data: mintData,
     write: mint,
-    isLoading,
-    isSuccess,
+    isLoading: isMintLoading,
+    isSuccess: isMintStarted,
   } = useContractWrite(contractConfig, 'mint');
 
-  React.useEffect(() => {
-    setAccountReady(Boolean(account?.address));
-  }, [account]);
+  const { data: totalSupplyData } = useContractRead(
+    contractConfig,
+    'totalSupply',
+    { watch: true }
+  );
+
+  const { data: txData, isLoading: txLoading } = useWaitForTransaction({
+    hash: mintData?.hash,
+  });
+
+  React.useEffect(() => setAccountReady(Boolean(account?.address)), [account]);
 
   React.useEffect(() => {
-    setIsCardFlipped(isSuccess);
-  }, [isSuccess]);
+    setIsMinted(!txLoading && Boolean(txData));
+  }, [txLoading, txData]);
+
+  React.useEffect(() => {
+    if (totalSupplyData) {
+      setTotalMinted(totalSupplyData.toNumber());
+    }
+  }, [totalSupplyData]);
 
   return (
     <div
@@ -52,22 +73,23 @@ const Home: NextPage = () => {
       >
         <div style={{ flex: '1 1 auto' }}>
           <div style={{ padding: '24px 24px 24px 0' }}>
-            <h1>Minting is now live</h1>
+            <h1>NFT Demo Mint</h1>
             <ConnectButton />
+            <p style={{ margin: '24px 0 0' }}>{totalMinted} minted so far!</p>
             {accountReady && (
               <button
-                style={{ marginTop: 30 }}
-                disabled={isLoading || isSuccess}
+                style={{ marginTop: 12 }}
+                disabled={isMintLoading || isMintStarted}
                 className="button"
-                data-minting={isLoading}
-                data-minted={isSuccess}
+                data-mint-loading={isMintLoading}
+                data-mint-started={isMintStarted}
+                data-mint-done={isMinted}
                 onClick={() => mint()}
               >
-                {isSuccess
-                  ? 'Minted'
-                  : isLoading
-                  ? 'Waiting for approval'
-                  : 'Mint'}
+                {isMinted && 'Minted'}
+                {isMintLoading && 'Waiting for approval'}
+                {isMintStarted && 'Minting...'}
+                {!isMinted && !isMintLoading && !isMintStarted && 'Mint'}
               </button>
             )}
           </div>
@@ -75,7 +97,7 @@ const Home: NextPage = () => {
 
         <div style={{ flex: '0 0 auto' }}>
           <FlipCard>
-            <FrontCard isCardFlipped={isCardFlipped}>
+            <FrontCard isCardFlipped={isMinted}>
               <Image
                 layout="responsive"
                 src="/nft.png"
@@ -86,9 +108,10 @@ const Home: NextPage = () => {
               <h1 style={{ marginTop: 24 }}>Rainbow NFT</h1>
               <ConnectButton />
             </FrontCard>
-            <BackCard isCardFlipped={isCardFlipped}>
+            <BackCard isCardFlipped={isMinted}>
               <div style={{ padding: 24 }}>
                 <h2>NFT Minted!</h2>
+
                 <p>
                   Your NFT will show up in your wallet in the next few minutes.
                 </p>
@@ -96,6 +119,14 @@ const Home: NextPage = () => {
                   View on{' '}
                   <a href={`https://rinkeby.etherscan.io/tx/${mintData?.hash}`}>
                     Etherscan
+                  </a>
+                </p>
+                <p>
+                  View on{' '}
+                  <a
+                    href={`https://testnets.opensea.io/assets/rinkeby/${mintData?.to}/1`}
+                  >
+                    Opensea
                   </a>
                 </p>
               </div>

@@ -25,19 +25,41 @@ body {
   border-radius: 9999px;
   align-items: center;
   color: white;
-  transition: all ease 100ms
+  transition: all ease 100ms;
 }
 
 button:not(:disabled):hover {
   transform: scale(1.04)
 }
 
-button[data-minting="true"] {
-   background: rgba(22, 25, 31, 0.24);
+button[data-mint-loading="true"] {
+  background: rgba(22, 25, 31, 0.24);
 }
 
-button[data-minted="true"] {
-   opacity: 0
+button[data-mint-started="true"] {
+  background-image: linear-gradient(270deg, #FF6257, #FF5CA0);
+  position: relative;
+}
+
+  button[data-mint-started="true"]::after {
+    animation-name: pulse;
+    animation-duration: 500ms;
+    animation-direction: alternate;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+    background-color: #FF6257;
+    border-radius: inherit;
+    bottom: 0;
+    content: ' ';
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+
+button[data-mint-done="true"] {
+   opacity: 0;
+   transform: scale(0.85);
 }
 
 h1 {
@@ -56,4 +78,9 @@ p {
 
 a {
   color: inherit
+}
+
+@keyframes pulse {
+  0% { opacity: 0 }
+  100% { opacity: '100%' }
 }
