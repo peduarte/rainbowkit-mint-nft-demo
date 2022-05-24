@@ -11,6 +11,22 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  padding: 0 30px;
+}
+
 .button {
   appearance: none;
   border: none;
@@ -62,23 +78,9 @@ button[data-mint-done="true"] {
    transform: scale(0.85);
 }
 
-h1 {
-  font-size: 24px;
-  margin-bottom: 24px;
-}
-
-h2 {
-  font-size: 18px;
-  margin-bottom: 24px;
-}
-
-p {
-  margin-bottom: 12px
-}
-
-a {
-  color: inherit
-}
+h1 { font-size: 24px; }
+h2 { font-size: 18px; }
+a { color: inherit }
 
 @keyframes pulse {
   0% { opacity: 0 }

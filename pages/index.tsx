@@ -10,7 +10,6 @@ import {
 } from 'wagmi';
 import contractInterface from '../contract-abi.json';
 import FlipCard, { BackCard, FrontCard } from '../components/FlipCard';
-import { ethers } from 'ethers';
 
 const contractConfig = {
   addressOrName: '0x86fbbb1254c39602a7b067d5ae7e5c2bdfd61a30',
@@ -53,43 +52,27 @@ const Home: NextPage = () => {
   }, [totalSupplyData]);
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '100vh',
-        maxWidth: 700,
-        margin: '0 auto',
-      }}
-    >
-      <div
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          width: '100%',
-          padding: '0 30px',
-        }}
-      >
+    <div className="page">
+      <div className="container">
         <div style={{ flex: '1 1 auto' }}>
           <div style={{ padding: '24px 24px 24px 0' }}>
             <h1>NFT Demo Mint</h1>
+            <p style={{ margin: '12px 0 24px' }}>
+              {totalMinted} minted so far!
+            </p>
             <ConnectButton />
-            <p style={{ margin: '24px 0 0' }}>{totalMinted} minted so far!</p>
-            {accountReady && (
+            {accountReady && !isMinted && (
               <button
-                style={{ marginTop: 12 }}
+                style={{ marginTop: 24 }}
                 disabled={isMintLoading || isMintStarted}
                 className="button"
                 data-mint-loading={isMintLoading}
                 data-mint-started={isMintStarted}
-                data-mint-done={isMinted}
                 onClick={() => mint()}
               >
-                {isMinted && 'Minted'}
                 {isMintLoading && 'Waiting for approval'}
                 {isMintStarted && 'Minting...'}
-                {!isMinted && !isMintLoading && !isMintStarted && 'Mint'}
+                {!isMintLoading && !isMintStarted && 'Mint'}
               </button>
             )}
           </div>
@@ -110,12 +93,18 @@ const Home: NextPage = () => {
             </FrontCard>
             <BackCard isCardFlipped={isMinted}>
               <div style={{ padding: 24 }}>
-                <h2>NFT Minted!</h2>
-
-                <p>
+                <Image
+                  src="/nft.png"
+                  width="80"
+                  height="80"
+                  alt="RainbowKit Demo NFT"
+                  style={{ borderRadius: 8 }}
+                />
+                <h2 style={{ marginTop: 24, marginBottom: 6 }}>NFT Minted!</h2>
+                <p style={{ marginBottom: 24 }}>
                   Your NFT will show up in your wallet in the next few minutes.
                 </p>
-                <p>
+                <p style={{ marginBottom: 6 }}>
                   View on{' '}
                   <a href={`https://rinkeby.etherscan.io/tx/${mintData?.hash}`}>
                     Etherscan
