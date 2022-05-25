@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import type { NextPage } from 'next';
 import {
-  useAccount,
+  useConnect,
   useContractRead,
   useContractWrite,
   useWaitForTransaction,
@@ -17,10 +17,8 @@ const contractConfig = {
 };
 
 const Home: NextPage = () => {
-  const [accountReady, setAccountReady] = React.useState(false);
-  const [isMinted, setIsMinted] = React.useState(false);
   const [totalMinted, setTotalMinted] = React.useState(0);
-  const { data: account } = useAccount();
+  const { isConnected } = useConnect();
 
   const {
     data: mintData,
@@ -35,21 +33,17 @@ const Home: NextPage = () => {
     { watch: true }
   );
 
-  const { data: txData, isLoading: txLoading } = useWaitForTransaction({
+  const { isSuccess: txSuccess } = useWaitForTransaction({
     hash: mintData?.hash,
   });
-
-  React.useEffect(() => setAccountReady(Boolean(account?.address)), [account]);
-
-  React.useEffect(() => {
-    setIsMinted(!txLoading && Boolean(txData));
-  }, [txLoading, txData]);
 
   React.useEffect(() => {
     if (totalSupplyData) {
       setTotalMinted(totalSupplyData.toNumber());
     }
   }, [totalSupplyData]);
+
+  const isMinted = txSuccess;
 
   return (
     <div className="page">
@@ -61,7 +55,7 @@ const Home: NextPage = () => {
               {totalMinted} minted so far!
             </p>
             <ConnectButton />
-            {accountReady && !isMinted && (
+            {isConnected && !isMinted && (
               <button
                 style={{ marginTop: 24 }}
                 disabled={isMintLoading || isMintStarted}
